@@ -1,10 +1,18 @@
+require_relative '../helper/cordova_helper'
+
 module Fastlane
   module Actions
-    class CleanCordovaAction < Action
+    class CordovaCleanAction < Action
       def self.run(params)
-        FastlaneCore::CommandExecutor.execute(command: "npx --no-install cordova clean",
+        platform = Actions.lane_context[SharedValues::PLATFORM_NAME]
+
+        FastlaneCore::CommandExecutor.execute(command: "npx --no-install cordova clean #{platform.to_s}",
                                               print_all: true,
                                               print_command: true)
+
+        if params[:rm_platform]
+          Helper::CordovaHelper.platform_rm(platform)
+        end
       end
 
       #####################################################
@@ -20,7 +28,13 @@ module Fastlane
       end
 
       def self.available_options
-        []
+        [
+          FastlaneCore::ConfigItem.new(key: :rm_platform,
+                                       env_name: "FL_CORDOVA_RM_PLATFORM",
+                                       description: "Also remove platform",
+                                       is_string: false,
+                                       default_value: false)
+        ]
       end
 
       def self.output
@@ -37,7 +51,8 @@ module Fastlane
 
       def self.example_code
         [
-          "clean_cordova()"
+          "cordova_clean",
+          "cordova_clean(rm_platform: true)"
         ]
       end
 
