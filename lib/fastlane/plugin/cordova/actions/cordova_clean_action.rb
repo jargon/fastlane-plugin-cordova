@@ -6,7 +6,6 @@ module Fastlane
       def self.run(params)
         platform = Actions.lane_context[SharedValues::PLATFORM_NAME]
 
-        Helper::CordovaHelper.ensure_platform(platform)
         FastlaneCore::CommandExecutor.execute(command: "npx --no-install cordova clean #{platform.to_s}",
                                               print_all: true,
                                               print_command: true)
