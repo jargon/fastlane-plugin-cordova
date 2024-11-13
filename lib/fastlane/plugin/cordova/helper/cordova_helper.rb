@@ -24,7 +24,7 @@ module Fastlane
 
       def self.ensure_platform(platform)
         if !File.directory?("./platforms/#{platform}")
-          self.platform_add(platform)
+          self.platform_add(platform, "")
         end
       end
 
