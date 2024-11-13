@@ -1,11 +1,12 @@
 module Fastlane
   module Helper
     class CordovaHelper
-      def self.platform_add(platform)
+      def self.platform_add(platform, version)
         if File.directory?("./platforms/#{platform}")
           UI.message("Platform #{platform} already exists. Nothing to do")
         else
-          FastlaneCore::CommandExecutor.execute(command: "npx --no-install cordova platform add #{platform.to_s}",
+          platform_string = if version.eql?("") then platform.to_s else "#{platform.to_s}@#{version.to_s}" end
+          FastlaneCore::CommandExecutor.execute(command: "npx --no-install cordova platform add #{platform_string.to_s}",
                                                 print_all: true,
                                                 print_command: true)
         end

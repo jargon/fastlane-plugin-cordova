@@ -6,10 +6,11 @@ module Fastlane
       def self.run(params)
         action = params[:action]
         platform = params[:platform] == "" ? Actions.lane_context[SharedValues::PLATFORM_NAME] : params[:platform]
+        version = params[:version]
 
         case action
         when "add"
-          Helper::CordovaHelper.platform_add(platform)
+          Helper::CordovaHelper.platform_add(platform, version)
         when "rm"
           Helper::CordovaHelper.platform_rm(platform)
         else
@@ -46,8 +47,15 @@ module Fastlane
                                         verify_block: proc do |value|
                                           UI.user_error!("Platform should be one of: android, browser, electron, ios") unless ['', 'android', 'browser', 'electron', 'ios'].include? value
                                         end
+                                      ),
+          FastlaneCore::ConfigItem.new(
+                                        key: :version,
+                                        env_name: "FL_CORDOVA_PLATFORM_VERSION",
+                                        description: "Platform version. Only used for platform add. Defaults to whatever Cordova thinks it should be",
+                                        is_string: true,
+                                        default_value: '',
                                       )
-        ]
+]
       end
 
       def self.output
@@ -64,7 +72,7 @@ module Fastlane
 
       def self.example_code
         [
-          "cordova_platform(action: 'add')",
+          "cordova_platform(action: 'add', version: '13.0.0')",
           "cordova_platform(action: 'rm')"
         ]
       end
