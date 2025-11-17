@@ -64,7 +64,7 @@ module Fastlane
           # ad-hoc is deprecated
           params[:type] = 'release-testing'
         end
-        if params[:type] == 'appstore' || params[:type] = 'app-store'
+        if params[:type] == 'appstore' || params[:type] == 'app-store'
           # app-store is deprecated
           params[:type] = 'app-store-connect'
         end
