@@ -46,7 +46,7 @@ module Fastlane
       end
 
       def self.find_widget(xml_doc)
-        return xml_doc.xpath("/w:widget", { "w" => "http://www.w3.org/ns/widgets" })
+        return xml_doc.at_xpath("/w:widget", { "w" => "http://www.w3.org/ns/widgets" })
       end
 
       def self.update_version(widget_node, new_version)
