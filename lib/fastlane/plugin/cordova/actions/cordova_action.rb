@@ -60,11 +60,13 @@ module Fastlane
           params[:provisioning_profile] = ENV['SIGH_UUID'] || ENV["sigh_#{app_identifier}_#{params[:type].sub("-","")}"]
         end
 
-        if params[:type] == 'adhoc'
-          params[:type] = 'ad-hoc'
+        if params[:type] == 'adhoc' || params[:type] == 'ad-hoc'
+          # ad-hoc is deprecated
+          params[:type] = 'release-testing'
         end
-        if params[:type] == 'appstore'
-          params[:type] = 'app-store'
+        if params[:type] == 'appstore' || params[:type] = 'app-store'
+          # app-store is deprecated
+          params[:type] = 'app-store-connect'
         end
 
         return self.get_platform_args(params, IOS_ARGS_MAP)
