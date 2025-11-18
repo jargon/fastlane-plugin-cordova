@@ -40,6 +40,7 @@ module Fastlane
             unless param_value.empty?
               param_value.each do |flag|
                 platform_args << flag.shellescape
+              end
             end
           else
             unless param_value.to_s.empty?
