@@ -21,7 +21,8 @@ module Fastlane
         type: 'packageType',
         team_id: 'developmentTeam',
         provisioning_profile: 'provisioningProfile',
-        build_flag: 'buildFlag'
+        build_flag: 'buildFlag',
+        xc_args: '',
       }
 
       def self.get_platform_args(params, args_map)
@@ -34,6 +35,11 @@ module Fastlane
               param_value.each do |flag|
                 platform_args << "--#{cli_param}=#{flag.shellescape}"
               end
+            end
+          elsif action_key.to_s == 'xc_args' && param_value.kind_of?(Array)
+            unless param_value.empty?
+              param_value.each do |flag|
+                platform_args << flag.shellescape
             end
           else
             unless param_value.to_s.empty?
@@ -305,6 +311,14 @@ module Fastlane
             key: :build_flag,
             env_name: "CORDOVA_IOS_BUILD_FLAG",
             description: "An array of Xcode buildFlag. Will be appended on compile command",
+            is_string: false,
+            optional: true,
+            default_value: []
+          ),
+          FastlaneCore::ConfigItem.new(
+            key: :xc_args,
+            env_name: "CORDOVA_IOS_XC_ARGS",
+            description: "An array of Xcode args. Will be appended on compile command",
             is_string: false,
             optional: true,
             default_value: []
